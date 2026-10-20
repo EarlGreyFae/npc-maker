@@ -28,4 +28,17 @@ public final class NpcUiTheme {
 
     private NpcUiTheme() {
     }
+
+    /**
+     * The first (longest) of several wordings that fits {@code maxWidth}, so hint lines never run off the screen at
+     * big GUI scales; the last one is cut to fit if even it is too long.
+     */
+    public static String fitting(net.minecraft.client.gui.Font font, int maxWidth, String... longestFirst) {
+        for (String option : longestFirst) {
+            if (font.width(option) <= maxWidth) {
+                return option;
+            }
+        }
+        return font.plainSubstrByWidth(longestFirst[longestFirst.length - 1], maxWidth);
+    }
 }

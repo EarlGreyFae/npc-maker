@@ -1336,7 +1336,11 @@ public class DialogueGraphScreen extends Screen {
         graphics.fill(0, height - STATUS_H, width, height, NpcUiTheme.PANEL);
         graphics.fill(0, height - STATUS_H, width, height - STATUS_H + 1, NpcUiTheme.BORDER_DIM);
         Component line = status.getString().isEmpty()
-                ? Component.literal("Drag boxes to move · drag empty space to pan · drag from ● to a box to connect, or into space for a new box · right-click ● to end there")
+                ? Component.literal(NpcUiTheme.fitting(font, width - 12,
+                        "Drag boxes to move · drag empty space to pan · drag from ● to a box to connect, or into space for a new box · right-click ● to end there",
+                        "Drag boxes to move · drag space to pan · drag ● to a box to connect, or into space for a new box · right-click ● ends",
+                        "Drag ● onto a box to connect, or into space for a new box · right-click ● ends · (?) for help",
+                        "Drag ● to connect · right-click ● ends · (?) for help"))
                 : status;
         graphics.text(font, font.plainSubstrByWidth(line.getString(), width - 12), 6, height - STATUS_H + 3,
                 status.getString().isEmpty() ? 0xFF6E6578 : statusColor, false);

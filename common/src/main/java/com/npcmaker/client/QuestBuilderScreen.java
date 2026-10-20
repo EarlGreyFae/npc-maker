@@ -734,7 +734,11 @@ public class QuestBuilderScreen extends Screen implements ClientContent.Listener
         graphics.fill(0, height - STATUS_H, width, height, NpcUiTheme.PANEL);
         graphics.fill(0, height - STATUS_H, width, height - STATUS_H + 1, NpcUiTheme.BORDER_DIM);
         String line = status.getString().isEmpty()
-                ? "Pick a section on the left · chips: click to pick or step through, right-click to step back or clear · scroll for more"
+                ? NpcUiTheme.fitting(font, width - 12,
+                        "Pick a section on the left · chips: click to pick or step through, right-click to step back or clear · scroll for more",
+                        "Pick a section on the left · click chips to pick, right-click to go back or clear · scroll for more",
+                        "Pick a section · click chips, right-click to go back · (?) for help",
+                        "Pick a section · (?) for help")
                 : status.getString();
         graphics.text(font, font.plainSubstrByWidth(line, width - 12), 6, height - STATUS_H + 3,
                 status.getString().isEmpty() ? 0xFF6E6578 : statusColor, false);

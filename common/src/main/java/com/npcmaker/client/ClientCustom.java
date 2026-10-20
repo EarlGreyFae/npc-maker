@@ -178,6 +178,12 @@ public final class ClientCustom {
         Path root = packDir();
         Path assets = root.resolve("assets").resolve(CustomContent.NAMESPACE);
         Files.createDirectories(assets);
+        // the NPC Maker icon, so the pack is recognisable in the resource pack list
+        try (java.io.InputStream icon = ClientCustom.class.getResourceAsStream("/assets/" + Constants.MOD_ID + "/icon.png")) {
+            if (icon != null) {
+                Files.copy(icon, root.resolve("pack.png"));
+            }
+        }
         JsonObject sounds = new JsonObject();
         Map<String, Integer> slots = new HashMap<>();
         manifest.particles().forEach(s -> slots.put(s.name(), s.slot()));
