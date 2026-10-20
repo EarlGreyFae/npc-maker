@@ -28,5 +28,7 @@ DESIGN.md
 NPC Maker Dev Launcher.bat
 tools/make-pebblehost-package.ps1
 PebbleHost Upload/
+# built jars copied here for uploading (they go on CurseForge / Modrinth, not in git)
+release/*.jar
 # a Minecraft sound copied for local testing only; never publish game assets
 Custom content samples/test_chime.ogg
