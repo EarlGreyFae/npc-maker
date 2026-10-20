@@ -1,0 +1,24 @@
+{
+  "stats": { "health": 30.0, "strength": 5.0, "armor": 2.0 },
+  "behavior": {
+    "movement": "wander",
+    "wander_radius": 16,
+    "combat": "aggressive",
+    "invulnerable": false,
+    "respawn": true,
+    "respawn_seconds": 300
+  },
+  "speech": {
+    "approach": ["Your coin or your life!", "Well, well. What have we here?"],
+    "hit_warning": ["You'll regret that."]
+  },
+  "ai_rules": [
+    { "when": "health_below", "value": 0.2, "then": "flee" },
+    { "when": "health_below", "value": 0.2, "then": "say", "text": ["Fall back!", "This isn't worth it!"], "cooldown": 30 },
+    {
+      "when": "player_near", "value": 12,
+      "if": [ { "type": "target_relation", "relation": "allied", "value": false } ],
+      "then": "attack"
+    }
+  ]
+}

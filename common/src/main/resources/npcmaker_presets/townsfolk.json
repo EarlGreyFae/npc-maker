@@ -1,0 +1,17 @@
+{
+  "behavior": {
+    "movement": "wander",
+    "wander_radius": 10,
+    "combat": "passive",
+    "invulnerable": false,
+    "respawn": true,
+    "flee": true
+  },
+  "speech": {
+    "hit_warning": ["Hey! What was that for?", "Please, leave me be!"]
+  },
+  "ai_rules": [
+    { "when": "time_is", "value": "night", "then": "go_home" },
+    { "when": "attacked", "then": "say", "text": ["Help! Guards!", "Somebody help!"], "cooldown": 15 }
+  ]
+}

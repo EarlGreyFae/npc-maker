@@ -1,0 +1,16 @@
+{
+  "stats": { "health": 40.0, "strength": 6.0, "armor": 6.0, "knockback_resistance": 0.2 },
+  "behavior": {
+    "movement": "stationary",
+    "combat": "guard",
+    "invulnerable": false,
+    "respawn": true
+  },
+  "speech": {
+    "hit_warning": ["Hey! Watch it!", "Careful."]
+  },
+  "ai_rules": [
+    { "when": "attacked", "then": "say", "text": ["To arms!", "You'll pay for that!"], "cooldown": 20 },
+    { "when": "ally_attacked", "then": "attack" }
+  ]
+}

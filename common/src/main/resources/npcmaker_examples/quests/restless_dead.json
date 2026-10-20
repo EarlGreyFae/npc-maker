@@ -1,0 +1,32 @@
+{
+  "title": "<gold>The Restless Dead</gold>",
+  "description": "The Dawnguard Sentry wants the undead around the road put back in their graves before they gather in numbers.",
+  "giver": "example_guard",
+  "stages": [
+    {
+      "text": "Slay the undead that roam near the road.",
+      "objectives": [
+        { "type": "kill", "entity": "#minecraft:undead", "count": 5, "text": "Slay undead" }
+      ]
+    },
+    {
+      "text": "Report back to the Dawnguard Sentry.",
+      "objectives": [
+        { "type": "talk", "npc": "example_guard" }
+      ]
+    }
+  ],
+  "rewards": [
+    { "type": "item", "item": { "id": "minecraft:iron_ingot", "count": 5 } },
+    { "type": "xp", "amount": 50 },
+    { "type": "reputation", "faction": "dawnguard", "amount": 15 },
+    { "type": "set_flag", "flag": "restless_dead_done" }
+  ],
+  "choose_one": [
+    { "id": "minecraft:iron_sword", "count": 1 },
+    { "id": "minecraft:shield", "count": 1 },
+    { "id": "minecraft:bow", "count": 1 }
+  ],
+  "repeatable": true,
+  "cooldown_minutes": 20
+}

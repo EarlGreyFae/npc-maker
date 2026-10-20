@@ -1,0 +1,1 @@
+Build your own NPCs in game: looks (any mob or your own Blockbench models), AI rules, patrols, factions, branching dialogue, quests, animations and sounds, all in friendly in-game editors.

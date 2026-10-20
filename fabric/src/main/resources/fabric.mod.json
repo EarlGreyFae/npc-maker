@@ -1,0 +1,35 @@
+{
+    "schemaVersion": 1,
+    "id": "${mod_id}",
+    "version": "${version}",
+    "name": "${mod_name}",
+    "description": "${description}",
+    "authors": [
+        "${mod_author}"
+    ],
+    "license": "${license}",
+    "icon": "assets/${mod_id}/icon.png",
+    "contact": {
+        "homepage": "${homepage_url}",
+        "sources": "${sources_url}",
+        "issues": "${issues_url}"
+    },
+    "environment": "*",
+    "entrypoints": {
+        "main": [
+            "com.npcmaker.fabric.NpcMakerFabric"
+        ],
+        "client": [
+            "com.npcmaker.fabric.NpcMakerFabricClient"
+        ]
+    },
+    "mixins": [
+        "${mod_id}.mixins.json"
+    ],
+    "depends": {
+        "fabricloader": ">=${fabric_loader_version}",
+        "fabric-api": "*",
+        "minecraft": "~${minecraft_version}",
+        "java": ">=${java_version}"
+    }
+}

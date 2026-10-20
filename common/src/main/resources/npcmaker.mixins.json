@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.npcmaker.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "client.EntityRenderDispatcherMixin",
+    "client.PackRepositoryMixin",
+    "client.PlayerModelMixin",
+    "client.WalkAnimationStateAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

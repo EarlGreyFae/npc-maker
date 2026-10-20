@@ -1,0 +1,174 @@
+{
+  "start": "greet",
+  "openers": [
+    { "if": [ { "type": "faction_member", "faction": "dawnguard" } ], "goto": "member_greet" },
+    { "if": [ { "type": "flag", "flag": "dawnguard_task_done" } ], "goto": "welcome_back" }
+  ],
+  "nodes": {
+    "greet": {
+      "text": [
+        "Halt, {player}.",
+        "The night is full of the <i>restless dead</i>. Stay close to the torches."
+      ],
+      "replies": [
+        { "text": "Who are you?", "goto": "who" },
+        {
+          "text": "Any work for me?",
+          "if": [ { "type": "flag", "flag": "dawnguard_task", "value": false } ],
+          "actions": [ { "type": "set_flag", "flag": "dawnguard_task" } ],
+          "goto": "task"
+        },
+        {
+          "text": "I brought the rotten flesh.",
+          "if": [
+            { "type": "flag", "flag": "dawnguard_task" },
+            { "type": "flag", "flag": "dawnguard_task_done", "value": false },
+            { "type": "has_item", "item": "minecraft:rotten_flesh", "count": 5 }
+          ],
+          "actions": [
+            { "type": "take_item", "item": "minecraft:rotten_flesh", "count": 5 },
+            { "type": "give_item", "item": { "id": "minecraft:emerald", "count": 3 } },
+            { "type": "change_reputation", "faction": "dawnguard", "amount": 10 },
+            { "type": "set_flag", "flag": "dawnguard_task_done" },
+            { "type": "play_sound", "sound": "minecraft:entity.player.levelup" }
+          ],
+          "goto": "thanks"
+        },
+        { "text": "Farewell." }
+      ]
+    },
+    "welcome_back": {
+      "text": "Welcome back, <gold>friend of the Dawnguard</gold>.",
+      "replies": [
+        {
+          "text": "Is there more work?",
+          "if": [ { "type": "quest", "quest": "restless_dead", "state": "can_start" } ],
+          "actions": [ { "type": "offer_quest", "quest": "restless_dead" } ]
+        },
+        {
+          "text": "About the restless dead...",
+          "if": [ { "type": "quest", "quest": "restless_dead", "state": "active" } ],
+          "goto": "restless_dead_progress"
+        },
+        {
+          "text": "I want to join the Dawnguard.",
+          "if": [ { "type": "can_join_faction", "faction": "dawnguard" } ],
+          "actions": [
+            { "type": "join_faction", "faction": "dawnguard" },
+            { "type": "change_reputation", "faction": "dawnguard", "amount": 10 }
+          ],
+          "goto": "joined"
+        },
+        {
+          "text": "Will you travel with me?",
+          "if": [ { "type": "is_companion", "value": false } ],
+          "actions": [ { "type": "become_companion" } ],
+          "goto": "join"
+        },
+        {
+          "text": "Wait here, friend.",
+          "if": [ { "type": "is_companion" } ],
+          "actions": [ { "type": "dismiss_companion" } ]
+        },
+        { "text": "I have some questions.", "goto": "who" },
+        { "text": "Farewell." }
+      ]
+    },
+    "joined": {
+      "text": [
+        "Then raise your blade with ours, {player}.",
+        "Welcome to the <gold>Dawnguard</gold>. The dead will learn your name."
+      ],
+      "replies": [
+        { "text": "I won't let you down.", "goto": "member_greet" }
+      ]
+    },
+    "member_greet": {
+      "text": "Hail, {player}. <gold>The night watch is ours.</gold>",
+      "replies": [
+        {
+          "text": "Is there more work?",
+          "if": [ { "type": "quest", "quest": "restless_dead", "state": "can_start" } ],
+          "actions": [ { "type": "offer_quest", "quest": "restless_dead" } ]
+        },
+        {
+          "text": "About the restless dead...",
+          "if": [ { "type": "quest", "quest": "restless_dead", "state": "active" } ],
+          "goto": "restless_dead_progress"
+        },
+        {
+          "text": "Will you travel with me?",
+          "if": [ { "type": "is_companion", "value": false } ],
+          "actions": [ { "type": "become_companion" } ],
+          "goto": "join"
+        },
+        {
+          "text": "Wait here, friend.",
+          "if": [ { "type": "is_companion" } ],
+          "actions": [ { "type": "dismiss_companion" } ]
+        },
+        {
+          "text": "I'm leaving the Dawnguard.",
+          "actions": [
+            { "type": "leave_faction", "faction": "dawnguard" },
+            { "type": "change_reputation", "faction": "dawnguard", "amount": -20 }
+          ],
+          "goto": "left"
+        },
+        { "text": "Farewell." }
+      ]
+    },
+    "left": {
+      "text": "<i>So be it.</i> Don't expect a warm welcome next time.",
+      "replies": [
+        { "text": "..." }
+      ]
+    },
+    "who": {
+      "text": [
+        "A sentry of the <gold>Dawnguard</gold>. We hunt what crawls out of the graves.",
+        "Our order keeps this road safe. <i>For now.</i>"
+      ],
+      "replies": [
+        { "text": "I have more questions.", "goto": "greet" },
+        { "text": "Farewell." }
+      ]
+    },
+    "task": {
+      "text": [
+        "Bring me <b>five pieces of rotten flesh</b> as proof you've fought the dead.",
+        "Do that, and the <gold>Dawnguard</gold> will remember you."
+      ],
+      "replies": [
+        { "text": "I'll be back." }
+      ]
+    },
+    "thanks": {
+      "text": "Good work. Take these, you've earned them.",
+      "replies": [
+        { "text": "Thank you.", "goto": "welcome_back" }
+      ]
+    },
+    "restless_dead_given": {
+      "text": [
+        "The graves won't stay shut. Put <b>five</b> of the dead back in the ground.",
+        "Then report to me. The <gold>Dawnguard</gold> pays its debts."
+      ],
+      "replies": [
+        { "text": "Consider it done." }
+      ]
+    },
+    "restless_dead_progress": {
+      "text": "Still walking out there, are they? <b>Five</b> of them, {player}. Then come back to me.",
+      "replies": [
+        { "text": "On my way." }
+      ]
+    },
+    "join": {
+      "text": "Very well, {player}. <gold>My blade is yours.</gold>",
+      "replies": [
+        { "text": "Let's go." }
+      ]
+    }
+  }
+}

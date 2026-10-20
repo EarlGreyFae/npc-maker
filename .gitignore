@@ -1,0 +1,32 @@
+# eclipse
+bin
+*.launch
+.settings
+.metadata
+.classpath
+.project
+
+# idea
+out
+*.ipr
+*.iws
+*.iml
+.idea/*
+!.idea/scopes
+
+# gradle
+build
+.gradle
+
+# other
+eclipse
+run
+runs
+
+# private: personal notes, local paths and server files (kept out of the public repository)
+DESIGN.md
+NPC Maker Dev Launcher.bat
+tools/make-pebblehost-package.ps1
+PebbleHost Upload/
+# a Minecraft sound copied for local testing only; never publish game assets
+Custom content samples/test_chime.ogg

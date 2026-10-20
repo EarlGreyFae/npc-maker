@@ -1,0 +1,16 @@
+{
+  "stats": { "health": 30.0, "strength": 5.0, "armor": 4.0 },
+  "behavior": {
+    "movement": "stationary",
+    "combat": "defensive",
+    "invulnerable": false,
+    "respawn": true,
+    "flee": false
+  },
+  "speech": {
+    "hit_warning": ["Hey, I'm on your side!"]
+  },
+  "ai_rules": [
+    { "when": "health_below", "value": 0.3, "then": "say", "text": ["I need a moment!", "I'm hurt!"], "cooldown": 30 }
+  ]
+}
