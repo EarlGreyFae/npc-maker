@@ -51,7 +51,7 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * The in-game NPC editor (sneak-right-click an NPC, or {@code /npcmaker edit}): section tabs down the left, the
+ * The in-game NPC editor (sneak-right-click an NPC, look at one and press I, or {@code /npcmaker edit}): section tabs down the left, the
  * section's fields in the middle, a turning preview of the NPC on the right. Saving always asks whether to update the
  * template (every NPC using it) or give only this NPC its own copy, and that choice takes two clicks.
  *
@@ -81,7 +81,7 @@ public class NpcEditorScreen extends Screen {
 
     private enum Tab {
         LOOK("Look"), STATS("Stats"), BEHAVIOUR("Behaviour"), RULES("AI rules"), GEAR("Gear"), INVENTORY("Inventory"), FACTIONS("Factions"),
-        SOUNDS("Sounds"), ANIMATION("Animation"), DIALOGUE("Dialogue"), QUESTS("Quests"), LOCATION("Location"), LIBRARY("Library");
+        SOUNDS("Sounds"), ANIMATION("Animation"), DIALOGUE("Dialogue"), QUESTS("Quests"), LOCATION("Location"), LIBRARY("Library"), LIVE("Live");
 
         final String label;
 
@@ -291,6 +291,36 @@ public class NpcEditorScreen extends Screen {
         public void pickFrom(String title, List<PickListScreen.Option> options, String current,
                              java.util.function.@Nullable Consumer<String> preview, java.util.function.Consumer<String> onPick) {
             minecraft.gui.setScreen(PickListScreen.single(NpcEditorScreen.this, title, options, current, "Clear", preview, onPick));
+        }
+    });
+
+    /** The Live tab: every NPC loaded right now (the same list as the I key's Live screen). */
+    private final LiveList liveList = new LiveList(new LiveList.Host() {
+        @Override
+        public net.minecraft.client.gui.Font font() {
+            return font;
+        }
+
+        @Override
+        public String currentTemplate() {
+            return data.template();
+        }
+
+        @Override
+        public boolean mayLeave() {
+            if (dirty && !discardArmed()) {
+                discardArmedAt = Util.getMillis();
+                status = Component.literal("Unsaved changes. Click Edit again to discard them.");
+                statusColor = 0xFFE0A048;
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        public void status(String message, int color) {
+            status = Component.literal(message);
+            statusColor = color;
         }
     });
 
@@ -521,6 +551,11 @@ public class NpcEditorScreen extends Screen {
         }
         if (tab == Tab.LOCATION) {
             addLocationBoxes();
+            return;
+        }
+        if (tab == Tab.LIVE) {
+            // The Live list uses the preview's space too: its rows need the width.
+            addRenderableWidget(liveList.layout(fieldsX(), bodyTop() + 6, panelW() - TABS_W - PAD * 2, bodyBottom() - bodyTop() - 10));
             return;
         }
         if (tab == Tab.RULES) {
@@ -1287,12 +1322,18 @@ public class NpcEditorScreen extends Screen {
             if (t.ready() && mx >= panelX() + 4 && mx < panelX() + TABS_W - 4 && my >= ty && my < ty + tabH()) {
                 if (t != tab) {
                     tab = t;
+                    if (t == Tab.LIVE) {
+                        LiveList.request();
+                    }
                     rebuildWidgets();
                 }
                 return true;
             }
         }
         if (tab == Tab.RULES && rulesPanel.contains(mx, my) && rulesPanel.click(mx, my, event.button())) {
+            return true;
+        }
+        if (tab == Tab.LIVE && liveList.click(mx, my)) {
             return true;
         }
         for (Hit hit : hits()) {
@@ -1397,6 +1438,9 @@ public class NpcEditorScreen extends Screen {
         if (tab == Tab.RULES && rulesPanel.contains(x, y)) {
             return rulesPanel.scroll(scrollY);
         }
+        if (tab == Tab.LIVE && liveList.contains(x, y)) {
+            return liveList.scroll(scrollY);
+        }
         if (tab == Tab.FACTIONS) {
             int max = Math.max(0, ClientContent.factions().size() - factionRows());
             factionScroll = Mth.clamp(factionScroll - (int) Math.signum(scrollY), 0, max);
@@ -1428,6 +1472,9 @@ public class NpcEditorScreen extends Screen {
         if (previewMob != null) {
             previewMob.tickCount++;
         }
+        if (tab == Tab.LIVE) {
+            liveList.tick();
+        }
     }
 
     // ---- drawing ------------------------------------------------------------------------------------------
@@ -1453,7 +1500,7 @@ public class NpcEditorScreen extends Screen {
 
         drawTabs(graphics, mouseX, mouseY);
         drawFields(graphics, mouseX, mouseY);
-        if (tab != Tab.RULES) {
+        if (tab != Tab.RULES && tab != Tab.LIVE) {
             drawPreview(graphics, mouseX, mouseY);
         }
 
@@ -1475,7 +1522,7 @@ public class NpcEditorScreen extends Screen {
                     : label.equals("Cancel") ? "editor.cancel" : label.contains("nly") ? "editor.scope.only" : "editor.scope.all";
             help.spot(b.x(), b.y(), b.w(), BUTTON_H, key);
         }
-        if (tab != Tab.RULES && !pickingMob) {
+        if (tab != Tab.RULES && tab != Tab.LIVE && !pickingMob) {
             help.spot(previewX(), bodyTop() + 2, PREVIEW_W - 6, bodyBottom() - bodyTop() - 4, "editor.preview");
         }
         if (tab == Tab.RULES) {
@@ -1578,6 +1625,10 @@ public class NpcEditorScreen extends Screen {
         }
         if (tab == Tab.RULES) {
             rulesPanel.draw(graphics, mouseX, mouseY);
+            return;
+        }
+        if (tab == Tab.LIVE) {
+            liveList.draw(graphics, help, mouseX, mouseY);
             return;
         }
         if (tab == Tab.LOCATION) {

@@ -113,6 +113,10 @@ public class NpcMakerNeoForge {
                         (payload, context) -> NpcNetworking.handleRequestSkin((ServerPlayer) context.player(), payload))
                 .playToServer(SaveNpcPayload.TYPE, SaveNpcPayload.CODEC,
                         (payload, context) -> NpcNetworking.handleSaveNpc((ServerPlayer) context.player(), payload))
+                .playToClient(com.npcmaker.network.LivePayloads.Snapshot.TYPE, com.npcmaker.network.LivePayloads.Snapshot.CODEC,
+                        (payload, context) -> NpcNetworking.handleLiveSnapshot(payload))
+                .playToServer(com.npcmaker.network.LivePayloads.Action.TYPE, com.npcmaker.network.LivePayloads.Action.CODEC,
+                        (payload, context) -> NpcNetworking.handleLiveAction((ServerPlayer) context.player(), payload))
                 .playToServer(QuestActionPayload.TYPE, QuestActionPayload.CODEC,
                         (payload, context) -> NpcNetworking.handleQuestAction((ServerPlayer) context.player(), payload))
                 .playToServer(RequestFactionsPayload.TYPE, RequestFactionsPayload.CODEC,

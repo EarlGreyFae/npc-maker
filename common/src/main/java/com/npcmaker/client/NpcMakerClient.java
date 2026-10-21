@@ -22,5 +22,6 @@ public final class NpcMakerClient {
                 ClientQuests::onMarkers, NpcEditorScreen::open, NpcEditorScreen::result, ClientSkins::onData,
                 ClientSkins::onLibrary, DialogueGraphScreen::open, ClientContent::onIndex, ClientContent::onFile,
                 ClientContent::onSaved, ClientCustom::onManifest, ClientCustom::onFilePart));
+        NpcNetworking.setLiveHandler(LiveList::onSnapshot);
     }
 }

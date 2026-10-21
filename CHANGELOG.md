@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- **I** opens the editor for the NPC you're looking at, or the new **Live** list when there's none.
+- **Live** (new last tab in the editor, and the I key's screen): every NPC loaded right now in every world, nearest
+  first, with Find (it glows for you for 30 seconds), Go (teleport), Edit and Remove. Works like Enemy Maker's Live list.
+- The editor can now save NPCs in other dimensions (opened from the Live list).
+
 ## 0.1.0 (beta) — first release
 
 For Minecraft 26.3, on Fabric and NeoForge.

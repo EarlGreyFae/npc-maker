@@ -80,7 +80,7 @@ public final class NpcEditing {
         if (!NpcPermissions.canEdit(player)) {
             return;
         }
-        if (!(player.level().getEntity(payload.entityId()) instanceof NpcEntity npc) || npc.instance() == null) {
+        if (!(findNpc(player.level().getServer(), payload.entityId()) instanceof NpcEntity npc) || npc.instance() == null) {
             reply(player, false, "That NPC is gone.");
             return;
         }
@@ -183,7 +183,7 @@ public final class NpcEditing {
         if (!NpcPermissions.canEdit(player)) {
             return;
         }
-        if (!(player.level().getEntity(payload.entityId()) instanceof NpcEntity npc) || npc.instance() == null
+        if (!(findNpc(player.level().getServer(), payload.entityId()) instanceof NpcEntity npc) || npc.instance() == null
                 || !npc.instance().template().equals(payload.template())) {
             reply(player, false, "That NPC is gone or has changed since the editor opened.");
             return;
@@ -263,6 +263,16 @@ public final class NpcEditing {
                 }
             }
         }
+    }
+
+    /** A loaded NPC by entity id in any dimension (entity ids are unique server-wide), so the Live list can edit far NPCs. */
+    public static @Nullable NpcEntity findNpc(MinecraftServer server, int entityId) {
+        for (ServerLevel level : server.getAllLevels()) {
+            if (level.getEntity(entityId) instanceof NpcEntity npc) {
+                return npc;
+            }
+        }
+        return null;
     }
 
     /** The NPC the player is looking at (within 24 blocks), for {@code /npcmaker edit} without a target. */

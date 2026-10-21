@@ -146,7 +146,7 @@ public final class NpcNetworking {
     }
 
     public static void handleRequestDialogue(ServerPlayer player, DialoguePayloads.Request payload) {
-        if (player.level().getEntity(payload.entityId()) instanceof com.npcmaker.entity.NpcEntity npc) {
+        if (com.npcmaker.editor.NpcEditing.findNpc(player.level().getServer(), payload.entityId()) instanceof com.npcmaker.entity.NpcEntity npc) {
             com.npcmaker.editor.NpcEditing.openDialogue(player, npc);
         }
     }
@@ -165,6 +165,21 @@ public final class NpcNetworking {
 
     public static void handleSaveNpc(ServerPlayer player, SaveNpcPayload payload) {
         com.npcmaker.editor.NpcEditing.save(player, payload);
+    }
+
+    public static void handleLiveAction(ServerPlayer player, LivePayloads.Action payload) {
+        com.npcmaker.editor.LiveNpcs.handle(player, payload);
+    }
+
+    /** Where the Live list goes on the client; set by the client at startup (kept out of ClientHandlers on purpose). */
+    private static Consumer<LivePayloads.Snapshot> liveHandler = p -> { };
+
+    public static void setLiveHandler(Consumer<LivePayloads.Snapshot> handler) {
+        liveHandler = handler;
+    }
+
+    public static void handleLiveSnapshot(LivePayloads.Snapshot payload) {
+        liveHandler.accept(payload);
     }
 
     // ---- received on the server ---------------------------------------------------------------------------

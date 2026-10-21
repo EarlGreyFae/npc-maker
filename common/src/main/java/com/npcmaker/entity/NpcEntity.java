@@ -1136,6 +1136,17 @@ public class NpcEntity extends PathfinderMob {
         }
     }
 
+    /** Glows (gold, only for the player who asked) while "Find" in the Live list is lighting it up. */
+    @Override
+    public boolean isCurrentlyGlowing() {
+        return (level().isClientSide() && LocateGlow.isLit(getId())) || super.isCurrentlyGlowing();
+    }
+
+    @Override
+    public int getTeamColor() {
+        return level().isClientSide() && LocateGlow.isLit(getId()) ? LocateGlow.COLOR : super.getTeamColor();
+    }
+
     @Override
     public void tick() {
         super.tick();

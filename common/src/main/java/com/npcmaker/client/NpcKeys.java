@@ -1,6 +1,7 @@
 package com.npcmaker.client;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import com.npcmaker.network.LivePayloads;
 import com.npcmaker.network.NpcNetworking;
 import com.npcmaker.network.RequestFactionsPayload;
 import net.minecraft.client.KeyMapping;
@@ -13,6 +14,9 @@ public final class NpcKeys {
             InputConstants.Type.KEYBOARD, InputConstants.KEY_J, KeyMapping.Category.MISC);
     public static final KeyMapping QUESTS = new KeyMapping("key.npcmaker.quests",
             InputConstants.Type.KEYBOARD, InputConstants.KEY_K, KeyMapping.Category.MISC);
+    /** Edits the NPC you're looking at, or opens the Live list when there's none (operators and creative players). */
+    public static final KeyMapping EDITOR = new KeyMapping("key.npcmaker.editor",
+            InputConstants.Type.KEYBOARD, InputConstants.KEY_I, KeyMapping.Category.MISC);
 
     private NpcKeys() {
     }
@@ -29,6 +33,12 @@ public final class NpcKeys {
                 QuestJournalScreen.open();
             }
         }
+        while (EDITOR.consumeClick()) {
+            if (mc.player != null && mc.gui.screen() == null) {
+                NpcNetworking.sendToServer(new LivePayloads.Action(LivePayloads.KEY, ""));
+            }
+        }
         ClientQuests.tick(mc);
+        com.npcmaker.entity.LocateGlow.prune();
     }
 }

@@ -100,6 +100,10 @@ public class NpcMakerFabric implements ModInitializer {
                 (payload, context) -> NpcNetworking.handleRequestSkin(context.player(), payload));
         ServerPlayNetworking.registerGlobalReceiver(SaveNpcPayload.TYPE,
                 (payload, context) -> NpcNetworking.handleSaveNpc(context.player(), payload));
+        PayloadTypeRegistry.clientboundPlay().register(com.npcmaker.network.LivePayloads.Snapshot.TYPE, com.npcmaker.network.LivePayloads.Snapshot.CODEC);
+        PayloadTypeRegistry.serverboundPlay().register(com.npcmaker.network.LivePayloads.Action.TYPE, com.npcmaker.network.LivePayloads.Action.CODEC);
+        ServerPlayNetworking.registerGlobalReceiver(com.npcmaker.network.LivePayloads.Action.TYPE,
+                (payload, context) -> NpcNetworking.handleLiveAction(context.player(), payload));
         PayloadTypeRegistry.serverboundPlay().register(DialogueChoicePayload.TYPE, DialogueChoicePayload.CODEC);
         PayloadTypeRegistry.serverboundPlay().register(RequestFactionsPayload.TYPE, RequestFactionsPayload.CODEC);
         PayloadTypeRegistry.serverboundPlay().register(QuestActionPayload.TYPE, QuestActionPayload.CODEC);

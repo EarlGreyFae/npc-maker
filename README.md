@@ -56,7 +56,9 @@ Operators and players in creative mode are builders: they can edit NPCs.
 
 1. `/npcmaker create baker as townsfolk Village Baker` makes an NPC template called `baker`.
 2. `/npcmaker spawn baker` places it where you stand.
-3. **Sneak-right-click** the NPC (or look at it and type `/npcmaker edit`) to open the editor.
+3. **Sneak-right-click** the NPC, or look at it and press **I**, to open the editor. **I** with no NPC in sight
+   opens the **Live** list: every NPC loaded right now, to find (it glows for you), go to, edit or remove. The
+   editor has the same list as its last tab.
 4. Click the **(?)** in any screen's corner to learn what each part does.
 
 Players right-click NPCs to talk to them. **J** opens the factions screen and **K** the quest journal (both can

@@ -63,12 +63,14 @@ public class NpcMakerFabricClient implements ClientModInitializer {
         ClientPlayNetworking.registerGlobalReceiver(com.npcmaker.network.ContentPayloads.Saved.TYPE, (payload, context) -> NpcNetworking.handleContentSaved(payload));
         ClientPlayNetworking.registerGlobalReceiver(com.npcmaker.network.CustomPayloads.Manifest.TYPE, (payload, context) -> NpcNetworking.handleCustomManifest(payload));
         ClientPlayNetworking.registerGlobalReceiver(com.npcmaker.network.CustomPayloads.FilePart.TYPE, (payload, context) -> NpcNetworking.handleCustomFile(payload));
+        ClientPlayNetworking.registerGlobalReceiver(com.npcmaker.network.LivePayloads.Snapshot.TYPE, (payload, context) -> NpcNetworking.handleLiveSnapshot(payload));
         for (var type : com.npcmaker.custom.NpcParticles.CUSTOM) {
             net.fabricmc.fabric.api.client.particle.v1.ParticleProviderRegistry.getInstance()
                     .register(type, sprites -> new com.npcmaker.client.CustomParticle.Provider(sprites));
         }
         KeyMappingHelper.registerKeyMapping(NpcKeys.FACTIONS);
         KeyMappingHelper.registerKeyMapping(NpcKeys.QUESTS);
+        KeyMappingHelper.registerKeyMapping(NpcKeys.EDITOR);
         ClientTickEvents.END_CLIENT_TICK.register(NpcKeys::onClientTick);
     }
 }

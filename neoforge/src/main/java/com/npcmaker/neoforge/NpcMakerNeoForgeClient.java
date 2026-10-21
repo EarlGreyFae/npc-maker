@@ -44,6 +44,7 @@ public class NpcMakerNeoForgeClient {
         modBus.addListener((RegisterKeyMappingsEvent event) -> {
             event.register(NpcKeys.FACTIONS);
             event.register(NpcKeys.QUESTS);
+            event.register(NpcKeys.EDITOR);
         });
         NeoForge.EVENT_BUS.addListener((ClientTickEvent.Post event) -> NpcKeys.onClientTick(Minecraft.getInstance()));
         NeoForge.EVENT_BUS.addListener((RegisterClientCommandsEvent event) -> event.getDispatcher().register(
